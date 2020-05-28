@@ -1,14 +1,14 @@
 var startBtn = document.querySelector("#start-btn");
+var playAgainBtn = document.querySelector("#playAgain-btn");
+var highScoreBtn = document.querySelector("#highScores-btn");
 var startEl = document.querySelector("#start");
 var questionsEl = document.querySelector("#questions");
 var choicesEl = document.querySelector("#questions");
-var finishEl = document.querySelector("#finsh");
+var finishEl = document.querySelector("#finish");
 var highscoreEl = document.querySelector("#highscore");
 var timerEl = document.querySelector("#timer");
 
-var questions = 
-[
-  {
+var questions = [{
     text: "NaN stands for? ",
     choices: ["Numbers-aNonymous", "Not-any-Nannies", "Not-a-Number", "No-absolutely-Not"],
     answer: 2
@@ -64,16 +64,19 @@ choicesEl.addEventListener("click", function (event) {
 function renderQuestionData() {
   let question = questions[i]
   choicesEl.innerHTML = "";
-  questionsEl.textContent =question.text;
+  questionsEl.textContent = question.text;
   // console.log(questionsEl.choices, "This is questions element console log 2")
-  question.choices.forEach(function(choice, index) {
+  question.choices.forEach(function (choice, index) {
     console.log(questionsEl.choices)
-    var choiceItem = document.createElement("div");
+    var choicecontainer = document.createElement("div");
+    var choiceItem = document.createElement("button");
 
     choiceItem.setAttribute("class", "item");
+    choicecontainer.setAttribute("class", "choiceContainer");
     choiceItem.setAttribute("data-id", index);
     choiceItem.textContent = choice;
-    choicesEl.appendChild(choiceItem);
+    choicesEl.appendChild(choicecontainer);
+    choicecontainer.appendChild(choiceItem);
 
   });
 }
@@ -100,10 +103,25 @@ startBtn.addEventListener("click", function (event) {
   startEl.style.display = "none";
   questionsEl.style.display = "flex";
 
+
   renderQuestionData();
   initializeTimer();
 
 
 
 
+});
+highScoreBtn.addEventListener("click", function (event) {
+  startEl.style.display = "none";
+  questionsEl.style.display = "none";
+  finishEl.style.display = "none";
+  highscoreEl.style.display = "flex";
+});
+
+playAgainBtn.addEventListener("click", function (event) {
+  startEl.style.display = "none";
+  questionsEl.style.display = "flex";
+  finishEl.style.display ="none";
+
+  initializeTimer();
 });
