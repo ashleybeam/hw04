@@ -125,3 +125,5 @@ playAgainBtn.addEventListener("click", function (event) {
 
   initializeTimer();
 });
+
+//added
