@@ -152,3 +152,5 @@ playAgainBtn.addEventListener("click", function (event) {
   renderQuestionData();
   initializeTimer();
 });
+
+//added
