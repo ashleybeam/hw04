@@ -7,6 +7,7 @@ var choicesEl = document.querySelector("#questions");
 var finishEl = document.querySelector("#finish");
 var highscoreEl = document.querySelector("#highscore");
 var timerEl = document.querySelector("#timer");
+var scoreEl = document.querySelector("#score");
 
 var questions = [{
     text: "NaN stands for? ",
@@ -39,6 +40,8 @@ var i = 0;
 var score = 0;
 var timeLeft = 75;
 var interval;
+var initials = "";
+var highScores = JSON.parse(localStorage.getItem("highscores")) || [];
 
 choicesEl.addEventListener("click", function (event) {
   var element = event.target;
@@ -51,10 +54,12 @@ choicesEl.addEventListener("click", function (event) {
       score++;
     } else {
       console.log("WRONG ANSWER");
+      timeLeft = timeLeft - 5;
     }
     i++;
     console.log("SCORE", score);
     renderQuestionData();
+
   }
 });
 
@@ -77,9 +82,20 @@ function renderQuestionData() {
     choiceItem.textContent = choice;
     choicesEl.appendChild(choicecontainer);
     choicecontainer.appendChild(choiceItem);
+    if (i > questions.length) {
+      console.log("END GAME");
+      startEl.style.display = "none";
+      questionsEl.style.display = "none";
+      finishEl.style.display = "flex";
+      highscoreEl.style.display = "none"
+      clearInterval(interval);
+
+    }
 
   });
+
 }
+
 
 //function that initializes timer
 function initializeTimer() {
@@ -89,12 +105,21 @@ function initializeTimer() {
     if (timeLeft > 0) {
       timerEl.textContent = timeLeft;
     } else {
+
       console.log("END GAME");
       startEl.style.display = "none";
       questionsEl.style.display = "none";
       finishEl.style.display = "flex";
       highscoreEl.style.display = "none"
       clearInterval(interval);
+
+      var highScore = {
+        initials: initials,
+        score: 0,
+      }
+      highScores.push(highScore);
+      localStorage.setItem('highScores', JSON.stringify(highScores));
+      var showHighScore = JSON.parse(localStorage.getItem('highScores'));
     }
   }, 1000);
 }
@@ -102,6 +127,7 @@ function initializeTimer() {
 startBtn.addEventListener("click", function (event) {
   startEl.style.display = "none";
   questionsEl.style.display = "flex";
+  finishEl.style.display = "none";
 
 
   renderQuestionData();
@@ -121,7 +147,8 @@ highScoreBtn.addEventListener("click", function (event) {
 playAgainBtn.addEventListener("click", function (event) {
   startEl.style.display = "none";
   questionsEl.style.display = "flex";
-  finishEl.style.display ="none";
+  finishEl.style.display = "none";
 
+  renderQuestionData();
   initializeTimer();
 });
